@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Biblioteca SEMSAD - Inicio de Sesión</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #f1f5f9;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 15px;
+        }
+        .card-login {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 380px;
+            padding: 30px 22px;
+        }
+        @media (min-width: 576px) { .card-login { padding: 35px 28px; } }
+        .login-title {
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 20px;
+            line-height: 1.35;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        @media (min-width: 576px) { .login-title { font-size: 22px; } }
+        .form-control {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 15px;
+            color: #334155;
+        }
+        .form-control:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
+        }
+        .input-group-password { position: relative; }
+        .input-group-password .form-control { padding-right: 45px; border-radius: 10px; }
+        .btn-toggle-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 17px;
+            cursor: pointer;
+            z-index: 10;
+            padding: 5px;
+        }
+        .btn-toggle-eye:hover { color: #0066ff; }
+        .btn-acceder {
+            background-color: #0066ff;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 13px;
+            border-radius: 30px;
+            border: none;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-acceder:hover { background-color: #0052cc; }
+        .link-blue {
+            color: #0066ff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .link-blue:hover { text-decoration: underline; }
+        .text-muted-info { color: #64748b; font-size: 14px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div class="card-login">
+    <h2 class="login-title">Bienvenido a la biblioteca<br>SEMSAD</h2>
+
+    <div id="alerta_mensaje" class="alert d-none mb-3" role="alert"></div>
+
+    <form id="formLogin" autocomplete="off" onsubmit="realizarLogin(event);">
+        <div class="mb-3">
+            <input type="text" id="correo" class="form-control" placeholder="Correo institucional o código" autocomplete="off" required>
+        </div>
+
+        <div class="mb-4 input-group-password">
+            <input type="password" id="clave" class="form-control" placeholder="Contraseña" autocomplete="current-password" required>
+            <button class="btn-toggle-eye" type="button" onclick="toggleVisibilidad('clave', this)">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+
+        <button type="submit" id="btnAcceder" class="btn-acceder">Acceder</button>
+    </form>
+
+    <div class="text-center mt-4">
+        <div class="mb-2">
+            <a href="recuperar.html" class="link-blue">🔑 ¿Olvidaste tu contraseña?</a>
+        </div>
+        <div>
+            <span class="text-muted-info">📝 ¿No tienes cuenta? </span>
+            <a href="registro.html" class="link-blue">Regístrate</a>
+        </div>
+    </div>
+</div>
+
+<script src="../js/config.js"></script>
+<script>
+function toggleVisibilidad(idInput, boton) {
+    const input = document.getElementById(idInput);
+    const icono = boton.querySelector('i');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        icono.classList.remove('fa-eye');
+        icono.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icono.classList.remove('fa-eye-slash');
+        icono.classList.add('fa-eye');
+    }
+}
+
+function mostrarAlerta(mensaje, tipo) {
+    const alerta = document.getElementById('alerta_mensaje');
+    alerta.className = `alert alert-${tipo === 'success' ? 'success' : 'danger'} py-2 px-3 small text-center`;
+    alerta.textContent = mensaje;
+    alerta.classList.remove('d-none');
+}
+
+function restaurarBoton(btn) {
+    btn.disabled = false;
+    btn.innerHTML = 'Acceder';
+}
+
+async function realizarLogin(event) {
+    event.preventDefault();
+
+    const correo = document.getElementById('correo').value.trim();
+    const clave = document.getElementById('clave').value;
+    const btn = document.getElementById('btnAcceder');
+
+    if (!correo || !clave) {
+        mostrarAlerta('Por favor, ingresa tu correo y contraseña.', 'error');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Verificando...';
+
+    try {
+        const resp = await fetch(`${window.SEMSAD_API}/login.php`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ correo, clave })
+        });
+
+        const texto = await resp.text();
+        let data;
+        try {
+            data = JSON.parse(texto);
+        } catch (e) {
+            // El servidor respondió, pero no con JSON (página de error, 404, código PHP sin ejecutar...)
+            console.error('Respuesta no válida de /login.php', resp.status, texto.slice(0, 300));
+            mostrarAlerta(`El servidor respondió algo inesperado (código ${resp.status}). Revisa que la API esté publicada en AlwaysData.`, 'error');
+            restaurarBoton(btn);
+            return;
+        }
+
+        if (data.status === 'success' && data.usuario) {
+            // Guardamos al usuario: las demás páginas lo leen de aquí.
+            SEMSAD.setUser({
+                id: data.usuario.id_usuario,
+                name: data.usuario.nombre,
+                role: data.usuario.rol,
+                ci: data.usuario.ci,
+                correo: data.usuario.correo
+            });
+            mostrarAlerta('¡Inicio de sesión exitoso! Redirigiendo...', 'success');
+            setTimeout(() => { window.location.href = SEMSAD.destinoSegunRol(data.usuario.rol); }, 800);
+        } else {
+            mostrarAlerta(data.mensaje || 'Credenciales incorrectas.', 'error');
+            restaurarBoton(btn);
+        }
+    } catch (err) {
+        console.error('Error de red en el login:', err);
+        mostrarAlerta('No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.', 'error');
+        restaurarBoton(btn);
+    }
+}
+</script>
+
+</body>
+</html>

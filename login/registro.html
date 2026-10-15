@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Biblioteca SEMSAD - Registro de Estudiante</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0f172a;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            margin: 0;
+        }
+
+        .card-registro {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 520px;
+            padding: 28px 20px;
+        }
+
+        @media (min-width: 576px) {
+            .card-registro {
+                padding: 35px 30px;
+            }
+        }
+
+        .icon-header {
+            width: 64px;
+            height: 64px;
+            background-color: #2563eb;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.3);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 13.5px;
+            margin-bottom: 5px;
+        }
+
+        .input-group-text {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            color: #64748b;
+        }
+
+        .form-control {
+            border-color: #cbd5e1;
+            padding: 11px 12px;
+            font-size: 15px;
+            border-radius: 8px;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn-toggle-eye {
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #64748b;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-toggle-eye:hover, .btn-toggle-eye:focus {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .btn-primary-custom {
+            background-color: #ffffff;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            font-weight: 700;
+            padding: 13px;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-success-custom {
+            background-color: #16a34a;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 13px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-success-custom:hover {
+            background-color: #15803d;
+        }
+
+        .link-login {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .link-login:hover {
+            color: #2563eb;
+        }
+
+        #seccion_otp {
+            background-color: #f8fafc;
+            border: 2px dashed #2563eb;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-registro">
+    <div class="icon-header">
+        <i class="fas fa-user-shield"></i>
+    </div>
+
+    <h3 class="text-center fw-bold text-dark mb-1 fs-4">Crear Cuenta Estudiante</h3>
+    <p class="text-center text-muted small mb-4">Biblioteca SEMSAD</p>
+
+    <div id="alerta_mensaje" class="alert d-none" role="alert"></div>
+
+    <form id="formRegistro" autocomplete="off" onsubmit="return false;">
+        <div class="row g-2 mb-2">
+            <div class="col-12 col-sm-6 mb-2 mb-sm-0">
+                <label class="form-label">Nombres</label>
+                <input type="text" id="nombres" class="form-control" placeholder="Ej. Juan Carlos" autocomplete="off" required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label class="form-label">Apellidos</label>
+                <input type="text" id="apellidos" class="form-control" placeholder="Ej. Pérez Gómez" autocomplete="off" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo Electrónico</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <input type="email" id="correo" class="form-control" placeholder="tu_correo@gmail.com" autocomplete="off" required>
+            </div>
+        </div>
+
+        <div class="row g-2 mb-2">
+            <div class="col-12 col-sm-6 mb-2 mb-sm-0">
+                <label class="form-label">Carnet de Identidad (CI)</label>
+                <input type="text" id="codigo_empleado" class="form-control" placeholder="Ej. 12345678" autocomplete="off" required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label class="form-label">Teléfono / Celular</label>
+                <input type="text" id="telefono" class="form-control" placeholder="Ej. 71234567" autocomplete="off" required>
+            </div>
+        </div>
+
+        <div class="row g-2 mb-4">
+            <div class="col-12 col-sm-6 mb-3 mb-sm-0">
+                <label class="form-label">Contraseña Secreta</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="clave" class="form-control" placeholder="••••••••" autocomplete="new-password" required>
+                    <button class="btn btn-toggle-eye" type="button" onclick="toggleVisibilidad('clave', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6">
+                <label class="form-label">Confirmar Clave</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <input type="password" id="confirmar_clave" class="form-control" placeholder="••••••••" autocomplete="new-password" required>
+                    <button class="btn btn-toggle-eye" type="button" onclick="toggleVisibilidad('confirmar_clave', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnEnviarCodigo" type="button" onclick="enviarCodigoOTP()" class="btn btn-primary-custom">
+            <i class="fas fa-paper-plane me-2"></i> Enviar Código de Verificación
+        </button>
+
+        <div id="seccion_otp" class="d-none">
+            <label class="form-label text-center d-block fw-bold text-primary mb-2">
+                Ingresa el Código de 6 Dígitos recibido en tu Correo:
+            </label>
+            <input type="text" id="codigo_otp" class="form-control text-center fs-3 fw-bold mb-3" placeholder="000000" maxlength="6" autocomplete="off">
+            <button id="btnConfirmarRegistro" type="button" onclick="completarRegistro()" class="btn btn-success-custom">
+                <i class="fas fa-check-circle me-2"></i> Confirmar y Crear Cuenta
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <a href="index.html" class="link-login">
+            <i class="fas fa-arrow-left me-1"></i> Volver al Inicio de Sesión
+        </a>
+    </div>
+</div>
+
+<script src="../js/config.js"></script>
+
+<script>
+function toggleVisibilidad(idInput, boton) {
+    const input = document.getElementById(idInput);
+    const icono = boton.querySelector('i');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        icono.classList.remove('fa-eye');
+        icono.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icono.classList.remove('fa-eye-slash');
+        icono.classList.add('fa-eye');
+    }
+}
+
+function mostrarAlerta(mensaje, tipo) {
+    const alerta = document.getElementById('alerta_mensaje');
+    alerta.className = `alert alert-${tipo === 'success' ? 'success' : 'danger'} alert-dismissible fade show small`;
+    // textContent (no innerHTML): el mensaje viene del servidor y no debe interpretarse como HTML
+    alerta.textContent = mensaje;
+    alerta.classList.remove('d-none');
+}
+
+// Llama a la API y devuelve el JSON, o lanza un Error con un mensaje claro para el usuario.
+async function llamarApi(archivo, datos) {
+    let resp;
+    try {
+        resp = await fetch(`${window.SEMSAD_API}/${archivo}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(datos)
+        });
+    } catch (e) {
+        console.error('Sin conexión con la API:', e);
+        throw new Error('No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.');
+    }
+    const texto = await resp.text();
+    try {
+        return JSON.parse(texto);
+    } catch (e) {
+        console.error('Respuesta no válida de', archivo, resp.status, texto.slice(0, 300));
+        throw new Error(`El servidor respondió algo inesperado (código ${resp.status}).`);
+    }
+}
+
+async function enviarCodigoOTP() {
+    const nombres = document.getElementById('nombres').value.trim();
+    const apellidos = document.getElementById('apellidos').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const codigo_empleado = document.getElementById('codigo_empleado').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const clave = document.getElementById('clave').value;
+    const confirmar_clave = document.getElementById('confirmar_clave').value;
+
+    if (!nombres || !apellidos || !correo || !codigo_empleado || !telefono || !clave || !confirmar_clave) {
+        mostrarAlerta('Por favor, completa todos los campos del formulario.', 'error');
+        return;
+    }
+    if (clave.length < 6) {
+        mostrarAlerta('La contraseña debe tener al menos 6 caracteres.', 'error');
+        return;
+    }
+    if (clave !== confirmar_clave) {
+        mostrarAlerta('Las contraseñas no coinciden. Por favor verifica.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('btnEnviarCodigo');
+    const textoBtn = '<i class="fas fa-paper-plane me-2"></i> Enviar Código de Verificación';
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Enviando código al correo...';
+
+    try {
+        const data = await llamarApi('enviar_codigo.php', { correo, codigo_empleado, telefono });
+        if (data.status === 'success') {
+            mostrarAlerta(data.mensaje || 'Código de verificación enviado.', 'success');
+            document.getElementById('seccion_otp').classList.remove('d-none');
+            btn.classList.add('d-none');
+        } else {
+            mostrarAlerta(data.mensaje || 'No se pudo enviar el código.', 'error');
+            btn.disabled = false;
+            btn.innerHTML = textoBtn;
+        }
+    } catch (err) {
+        mostrarAlerta(err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = textoBtn;
+    }
+}
+
+async function completarRegistro() {
+    const payload = {
+        nombres: document.getElementById('nombres').value.trim(),
+        apellidos: document.getElementById('apellidos').value.trim(),
+        correo: document.getElementById('correo').value.trim(),
+        codigo_empleado: document.getElementById('codigo_empleado').value.trim(),
+        telefono: document.getElementById('telefono').value.trim(),
+        clave: document.getElementById('clave').value,
+        codigo_otp: document.getElementById('codigo_otp').value.trim()
+    };
+
+    if (!payload.codigo_otp) {
+        mostrarAlerta('Ingresa el código de 6 dígitos enviado a tu correo.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('btnConfirmarRegistro');
+    const textoBtn = '<i class="fas fa-check-circle me-2"></i> Confirmar y Crear Cuenta';
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Verificando código y creando cuenta...';
+
+    try {
+        const data = await llamarApi('registrar_usuario.php', payload);
+        if (data.status === 'success') {
+            mostrarAlerta('¡Cuenta creada con éxito! Redirigiendo al inicio de sesión...', 'success');
+            setTimeout(() => { window.location.href = 'index.html'; }, 1800);
+        } else {
+            mostrarAlerta(data.mensaje || 'No se pudo crear la cuenta.', 'error');
+            btn.disabled = false;
+            btn.innerHTML = textoBtn;
+        }
+    } catch (err) {
+        mostrarAlerta(err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = textoBtn;
+    }
+}
+</script>
+
+</body>
+</html>

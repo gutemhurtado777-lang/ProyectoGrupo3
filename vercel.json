@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/login/index.html",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/backend/:path*",
+      "destination": "https://bibliosemsad.alwaysdata.net/api/:path*"
+    }
+  ]
+}
